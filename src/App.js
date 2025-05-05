@@ -17,8 +17,6 @@ const App = () => {
     {chatId: 2, title: 'Ciclano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
     {chatId: 3, title: 'Beltrano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
     {chatId: 4, title: 'Maria de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-    {chatId: 5, title: 'João de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-    {chatId: 6, title: 'Ana de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'}
   ]);
   const [activeChat, setActiveChat] = useState({});
 
@@ -51,7 +49,9 @@ const App = () => {
           {chatlist.map((item, key)=>(
             <ChatListItem 
               key={key}
-              onClick={() => setActiveChat({chatId: key})}
+              data={item}
+              active={activeChat.chatId === chatlist[key].chatId}
+              onClick={()=>setActiveChat(chatlist[key])}
             />
           ))}
         </div>
