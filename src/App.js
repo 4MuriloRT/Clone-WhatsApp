@@ -26,17 +26,28 @@ const App = () => {
     name: 'Murilo Taborda'
   });
 
+  const handleNewChat = () => {
+    setShowNewChat(true);
+  }
+
+  const [showNewChat, setShowNewChat] = useState(false);
+
   return(
     <div className='app-window'>
       <div className='sidebar'>
-        <NewChat/>
+        <NewChat
+          chatlist={chatlist}
+          user={user}
+          show={showNewChat}
+          setShow={setShowNewChat}
+        />
         <header>
           <img className='header--avatar' src={user.avatar} alt=''/>
           <div className='header--buttons'>
             <div className='header--btn'>
               <DonutLargeIcon style={{color: '#919191'}}/>
             </div>
-            <div className='header--btn'>
+            <div onClick={handleNewChat} className='header--btn'>
               <ChatIcon style={{color: '#919191'}}/>
             </div>
             <div className='header--btn'>
