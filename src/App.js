@@ -4,6 +4,7 @@ import "./App.css";
 import ChatListItem from "./components/ChatListItem";
 import ChatIntro from "./components/ChatIntro";
 import ChatWindow from "./components/ChatWindow";
+import NewChat from './components/NewChat';
 
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -19,12 +20,18 @@ const App = () => {
     {chatId: 4, title: 'Maria de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
   ]);
   const [activeChat, setActiveChat] = useState({});
+  const [user, setUser] = useState({
+    id: 1234,
+    avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b',
+    name: 'Murilo Taborda'
+  });
 
   return(
     <div className='app-window'>
       <div className='sidebar'>
+        <NewChat/>
         <header>
-          <img className='header--avatar' src='https://www.w3schools.com/howto/img_avatar2.png' alt=''/>
+          <img className='header--avatar' src={user.avatar} alt=''/>
           <div className='header--buttons'>
             <div className='header--btn'>
               <DonutLargeIcon style={{color: '#919191'}}/>
@@ -59,7 +66,9 @@ const App = () => {
 
       <div className='contentarea'>
         {activeChat.chatId !== undefined && 
-          <ChatWindow/>
+          <ChatWindow 
+            user={user}
+          />
         }
         {activeChat.chatId === undefined && 
           <ChatIntro/>

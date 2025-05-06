@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EmojiPicker from "emoji-picker-react";
 import './ChatWindow.css';
+
+import MessageItem from "./MessageItem";
 
 import SearchIcon from '@mui/icons-material/Search';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -9,21 +11,54 @@ import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import MicIcon from '@mui/icons-material/Mic';
+import { Message } from "@mui/icons-material";
 
 
-const ChatWindow = () => {
+const ChatWindow = ({user}) => {
     
+    const body = useRef();
+
     let recognition = null;
     let SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition !== undefined){
         recognition = new SpeechRecognition();
     }
 
-
-
     const [emojiOpen, setEmojiOpen] = useState(false);
     const [text, setText] = useState('');
     const [listening, setListening] = useState(false);
+    const [list, setList] = useState([
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+        {author:123, body:"BLA BLA BLA"},
+        {author:123, body:"bla bla Bla "},
+        {author:1234, body:"BLA BLA BLA Bla"},
+    ]);
+
+    useEffect(()=>{
+        if(body.current.scrollHeight > body.current.offsetHeight){
+            body.current.scrollTop = body.current.scrollHeight - body.current.offsetHeight;
+        }
+    }, [list]);
 
     const handleEmojiClick = (emojiObject) => {
         setText( text=> text+emojiObject.emoji); 
@@ -78,8 +113,15 @@ const ChatWindow = () => {
                     </div>
                 </div>
             </div>
-            <div className="chatWindow--body">
 
+            <div ref={body} className="chatWindow--body">
+                {list.map((item, key) => (
+                    <MessageItem 
+                        key={key}
+                        data={item}
+                        user={user}
+                    /> 
+                ))}
             </div>
 
             <div 
