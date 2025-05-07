@@ -96,10 +96,16 @@ export default {
   onChatList: (userId, setChatList) => {
     const userDoc = doc(db, "users", userId);
     return onSnapshot(userDoc, (docSnapshot) => {
-      if(docSnapshot.exists()){
+      if (docSnapshot.exists()) {
         const data = docSnapshot.data();
-        if(data.chats){
-          setChatList(data.chats);
+        if (data.chats) {
+          let chats = [...data.chats];
+          chats.sort((a, b) => {
+            if (!a.lastMessageDate) return 1;
+            if (!b.lastMessageDate) return -1;
+            return b.lastMessageDate.seconds - a.lastMessageDate.seconds;
+          });
+          setChatList(chats); // Corrigido aqui
         }
       }
     });

@@ -18,11 +18,7 @@ const App = () => {
 
   const [chatlist, setChatlist] = useState([]);
   const [activeChat, setActiveChat] = useState({});
-  const [user, setUser] = useState({
-      id: 'ExkzKJS0szfEmGeYiwULnI9cBpc2',
-      name: 'Murilo Taborda',
-      avatar: 'https://lh3.googleusercontent.com/a/ACg8ocK692Y2tJp7aB2DL3r5TGbRhnHd3VtfAHRrnbDBTcgV_pOXg2Dy=s96-c'
-  });
+  const [user, setUser] = useState(null);
   const [showNewChat, setShowNewChat] = useState(false);
 
   useEffect(()=>{
