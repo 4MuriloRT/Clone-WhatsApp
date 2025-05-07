@@ -1,16 +1,28 @@
-import React, { useState }from "react";
+import React, { useState, useEffect }from "react";
 import './NewChat.css'
+
+import Api from '../Api';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const NewChat = ({user, chatlist, show, setShow}) =>{
-    const [list, setList] = useState([
-        {id: 123, avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b', name: 'Murilo Taborda'},
-        {id: 123, avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b', name: 'Murilo Taborda'},
-        {id: 123, avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b', name: 'Murilo Taborda'},
-        {id: 123, avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b', name: 'Murilo Taborda'},
+    const [list, setList] = useState([]);
 
-    ]);
+    useEffect(()=>{
+        const getList = async () => {
+            if(user !== null) {
+                let results = await Api.getContactList(user.id);
+                setList(results);
+            }
+        }
+        getList();
+    },[user]);
+
+    const addNewChat = async (user2) => {
+        await Api.addNewChat(user, user2);
+
+        handleClose();
+    }
 
     const handleClose = () => {
         setShow(false);
@@ -28,7 +40,7 @@ const NewChat = ({user, chatlist, show, setShow}) =>{
             </div>
             <div className="newChat--list">
                 {list.map((item, key)=>(
-                    <div className="newChat--item" key={key}>
+                    <div onClick={()=>addNewChat(item)}className="newChat--item" key={key}>
                         <img className="newChat--itemavatar" src={item.avatar} alt=""/>
                         <div className="newChat--itemname">{item.name}</div>
                     </div>

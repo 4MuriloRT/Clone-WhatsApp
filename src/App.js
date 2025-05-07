@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import "./App.css";
 
+import Api from './Api';
+
+import Login from './components/Login';
 import ChatListItem from "./components/ChatListItem";
 import ChatIntro from "./components/ChatIntro";
 import ChatWindow from "./components/ChatWindow";
@@ -13,24 +16,39 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const App = () => {
 
-  const [chatlist, setChatlist] = useState([
-    {chatId: 1, title: 'Fulano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-    {chatId: 2, title: 'Ciclano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-    {chatId: 3, title: 'Beltrano de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-    {chatId: 4, title: 'Maria de Tal', image: 'https://www.w3schools.com/howto/img_avatar2.png'},
-  ]);
+  const [chatlist, setChatlist] = useState([]);
   const [activeChat, setActiveChat] = useState({});
   const [user, setUser] = useState({
-    id: 1234,
-    avatar: 'https://preview.redd.it/v7ce9f0xa5e81.png?width=256&format=png&auto=webp&s=3813219733b0ea278c0ef85f3588face949ef70b',
-    name: 'Murilo Taborda'
+      id: 'ExkzKJS0szfEmGeYiwULnI9cBpc2',
+      name: 'Murilo Taborda',
+      avatar: 'https://lh3.googleusercontent.com/a/ACg8ocK692Y2tJp7aB2DL3r5TGbRhnHd3VtfAHRrnbDBTcgV_pOXg2Dy=s96-c'
   });
+  const [showNewChat, setShowNewChat] = useState(false);
+
+  useEffect(()=>{
+    if(user !== null){
+      let unsub = Api.onChatList(user.id, setChatlist);
+      return unsub;
+    }
+  }, [user]); 
 
   const handleNewChat = () => {
     setShowNewChat(true);
   }
 
-  const [showNewChat, setShowNewChat] = useState(false);
+  const handleLoginData = async (u) => {
+    let newUser = {
+      id: u.uid,
+      name: u.displayName,
+      avatar: u.photoURL
+    };
+    await Api.addUser(newUser);
+    setUser(newUser);
+  }
+
+  if(user === null ){
+    return(<Login onReceive={handleLoginData}/>);
+  }
 
   return(
     <div className='app-window'>
@@ -79,6 +97,7 @@ const App = () => {
         {activeChat.chatId !== undefined && 
           <ChatWindow 
             user={user}
+            data={activeChat}
           />
         }
         {activeChat.chatId === undefined && 
